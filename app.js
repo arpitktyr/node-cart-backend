@@ -23,5 +23,5 @@ app.use((error, req, res, next) => {
   const message = error.message || 'Something went wrong.';
   res.status(status).json({ message: message });
 });
-
-app.listen(8080);
+const PORT = process.env.PORT || 8080;
+app.listen(PORT);//8080
