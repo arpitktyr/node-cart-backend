@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  mobile: {
+    type: String,
+  },
+  pincode: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("users", userSchema);

@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
 router.use(checkAuth);
 
 router.post("/updateUser", async (req, res, next) => {
-  const { name, address, id } = req.body;
+  const { name, address, pincode, mobile, id } = req.body;
   let errors = {};
 
   try {
@@ -95,6 +95,8 @@ router.post("/updateUser", async (req, res, next) => {
       {
         name,
         address,
+        pincode,
+        mobile,
       }
     );
     if (data) {
