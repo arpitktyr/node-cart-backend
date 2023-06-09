@@ -113,4 +113,23 @@ router.post("/updateUser", checkAuth, async (req, res, next) => {
   }
 });
 
+router.get("/user/:id", checkAuth, async (req, res, next) => {
+  const id = req.params.id;
+
+  let errors = {};
+
+  try {
+    const data = await User.findOne({ id });
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      return res.status(500).json({
+        message: "Something Went Wrong!.",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
