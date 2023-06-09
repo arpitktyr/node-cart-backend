@@ -82,10 +82,10 @@ router.post("/login", async (req, res) => {
   res.json({ token, id: user.id, email: user.email, name: user.name });
 });
 
-router.use(checkAuth);
+//router.use(checkAuth);
 
-router.post("/updateUser", async (req, res, next) => {
-  const { name, address, pincode, mobile, id } = req.body;
+router.post("/updateUser", checkAuth, async (req, res, next) => {
+  const { name, address, id, pincode, mobile } = req.body;
   let errors = {};
 
   try {
