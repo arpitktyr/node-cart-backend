@@ -1,13 +1,13 @@
-const bodyParser = require("body-parser");
 const express = require("express");
-
+const mongoose = require("mongoose");
+require("dotenv").config();
 const eventRoutes = require("./routes/events");
 const authRoutes = require("./routes/auth");
 const productsRoutes = require("./routes/products");
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
@@ -15,9 +15,21 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authRoutes);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-app.use("/events", eventRoutes);
+mongoose.connection.on("connected", () => {
+  console.log("connected to mongodb");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.log("error connecting", err);
+});
+
+app.use(authRoutes);
+//app.use("/events", eventRoutes);
 app.use(productsRoutes);
 
 app.use((error, req, res, next) => {
@@ -25,6 +37,7 @@ app.use((error, req, res, next) => {
   const message = error.message || "Something went wrong.";
   res.status(status).json({ message: message });
 });
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT); //8080
